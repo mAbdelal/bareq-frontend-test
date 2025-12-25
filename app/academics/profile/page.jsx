@@ -10,7 +10,7 @@ import Loader from "@/components/ui/Loader";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import dynamic from "next/dynamic";
 import PageTitle from "@/components/ui/page-title";
-import { Briefcase, Layers, Users, CreditCard } from "lucide-react";
+import { Briefcase, Layers, Users, CreditCard, HandCoins } from "lucide-react";
 import { Button } from "@/components/ui/button";
 const AsyncSelect = dynamic(() => import("react-select/async"), { ssr: false });
 
