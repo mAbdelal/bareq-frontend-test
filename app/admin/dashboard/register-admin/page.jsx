@@ -61,7 +61,7 @@ export default function RegisterAdminPage() {
       };
 
       const res = await fetchWithAuth(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/auth/register-admin`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/auth/register/admin`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

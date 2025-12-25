@@ -56,7 +56,7 @@ export default function SignUpPage() {
                 },
             };
 
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/register-academic`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/register/academic`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),
@@ -175,16 +175,12 @@ export default function SignUpPage() {
                             className={`border rounded-xl p-3 focus:outline-none focus:ring-2 ${errors.academic_status ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-primary"}`}
                         >
                             <option value="">اختر الحالة الأكاديمية</option>
-                            <option value="high_school_student">طالب ثانوي</option>
-                            <option value="high_school_graduate">خريج ثانوي</option>
                             <option value="bachelor_student">طالب بكالوريوس</option>
                             <option value="bachelor">بكالوريوس</option>
                             <option value="master_student">طالب ماجستير</option>
                             <option value="master">ماجستير</option>
                             <option value="phd_candidate">طالب دكتوراه</option>
                             <option value="phd">دكتوراه</option>
-                            <option value="alumni">خريج</option>
-                            <option value="researcher">باحث</option>
                             <option value="other">أخرى</option>
                         </select>
                         {errors.academic_status && <span className="text-red-500 text-sm mt-1">{errors.academic_status.message}</span>}
