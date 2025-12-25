@@ -91,33 +91,58 @@ export default function ViewProfilePage() {
                         <Link href="/academics/profile/edit" className="text-primary underline hover:text-primary/80">تعديل الملف الشخصي</Link>
                     </div>
 
-                    {/* Links below avatar */}
                     <div className="p-4 flex flex-col gap-3">
                         <Link href="/my-works">
                             <Button className="w-full flex items-center justify-start gap-3">
                                 <Briefcase size={24} />
-                                <span className="flex-1 text-right text-md font-semibold">اعمالي</span>
+                                <span className="flex-1 text-right text-md font-semibold">
+                                    اعمالي
+                                </span>
                             </Button>
                         </Link>
 
                         <Link href="/my-requests">
                             <Button className="w-full flex items-center justify-start gap-3">
                                 <Layers size={24} />
-                                <span className="flex-1 text-right text-md font-semibold">طلباتي</span>
+                                <span className="flex-1 text-right text-md font-semibold">
+                                    طلباتي
+                                </span>
                             </Button>
                         </Link>
 
                         <Link href="/my-services">
                             <Button className="w-full flex items-center justify-start gap-3">
                                 <Users size={24} />
-                                <span className="flex-1 text-right text-md font-semibold">خدماتي</span>
+                                <span className="flex-1 text-right text-md font-semibold">
+                                    خدماتي
+                                </span>
                             </Button>
                         </Link>
 
-                        <Link href="/my-deals">
+                        <Link href="/my-offers">
+                            <Button className="w-full flex items-center justify-start gap-3">
+                                <HandCoins size={24} />
+                                <span className="flex-1 text-right text-md font-semibold">
+                                    عروضي
+                                </span>
+                            </Button>
+                        </Link>
+
+                        <Link href="/my-purchases">
                             <Button className="w-full flex items-center justify-start gap-3">
                                 <CreditCard size={24} />
-                                <span className="flex-1 text-right text-md font-semibold">صفقاتي</span>
+                                <span className="flex-1 text-right text-md font-semibold">
+                                    مشترياتي
+                                </span>
+                            </Button>
+                        </Link>
+
+                        <Link href="/my-disputes">
+                            <Button className="w-full flex items-center justify-start gap-3">
+                                <Gavel size={24} />
+                                <span className="flex-1 text-right text-md font-semibold">
+                                    نزاعاتي
+                                </span>
                             </Button>
                         </Link>
                     </div>

@@ -209,7 +209,6 @@ export default function Navbar() {
                                 <Link href="/services" className="flex items-center gap-2 px-4 py-3 hover:bg-gray-100"><Briefcase className="w-5 h-5" /> خدمات</Link>
                                 <Link href="/requests" className="flex items-center gap-2 px-4 py-3 hover:bg-gray-100"><Layers className="w-5 h-5" /> طلبات</Link>
                                 <Link href="/academics" className="flex items-center gap-2 px-4 py-3 hover:bg-gray-100"><Users className="w-5 h-5" /> أكاديميين</Link>
-                                <Link href="/complaints" className="flex items-center gap-2 px-4 py-3 hover:bg-gray-100"><Megaphone className="w-5 h-5" /> الشكاوى</Link>
                                 <Link href="/home" className="flex items-center gap-2 px-4 py-3 hover:bg-gray-100"><User className="w-5 h-5" /> الملف الشخصي</Link>
                                 <Link href="/profile/change-password" className="flex items-center gap-2 px-4 py-3 hover:bg-gray-100"><Key className="w-5 h-5" /> تغيير كلمة المرور</Link>
                                 <div onClick={handleLogout} className="flex items-center gap-2 px-4 py-3 hover:bg-gray-100 cursor-pointer"><LogOut className="w-5 h-5" /> تسجيل الخروج</div>
