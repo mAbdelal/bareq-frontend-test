@@ -14,8 +14,8 @@ const nextConfig = {
             },
             {
                 protocol: "https",
-                hostname: "dangerous-darcie-bareq-4a27d84a.koyeb.app",
-                port: "8080",
+                hostname: "entire-brigida-bareq-21a455bc.koyeb.app",
+                port: "8000",
                 pathname: "/api/v1/assets/**",
             },
         ],
