@@ -38,7 +38,7 @@ export default function AddRequestPage() {
             .nullable()
             .transform((val, orig) => (orig === "" ? null : val)),
         description: yup.string().required("الوصف مطلوب"),
-        skills: yup.array().min(1, "اختر مهارة واحدة على الأقل"),
+        skills: yup.array().min(0),
         budget: yup
             .number()
             .typeError("الميزانية يجب أن تكون رقم")

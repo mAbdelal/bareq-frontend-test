@@ -15,9 +15,8 @@ import ChatMessages from "@/components/ui/ChatMessages";
 import BackLink from "@/components/ui/back-link";
 import { initSocket } from "@/lib/socket";
 import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
 
-function ChatPageContent() {
+export default function ChatPage() {
     const { type, id: parmId } = useParams();
     const router = useRouter();
     const { state } = useUser();
@@ -32,6 +31,7 @@ function ChatPageContent() {
     const [message, setMessage] = useState("");
     const [attachments, setAttachments] = useState([]);
     const [sending, setSending] = useState(false);
+    const [notFound, setNotFound] = useState(false);
 
     const isAdmin = state.user?.role ? true : false;
     const id = parmId?.[0];
@@ -81,6 +81,10 @@ function ChatPageContent() {
                     );
                 }
 
+                if (res.status === 404) {
+                    throw new Error("Chat not found");
+                }
+
                 const data = await res.json();
                 const chat = data.data;
 
@@ -91,6 +95,7 @@ function ChatPageContent() {
 
                 setChatData(chat);
             } catch (err) {
+                setNotFound(true);
                 toast.error("فشل تحميل المحادثة");
             } finally {
                 setLoading(false);
@@ -148,10 +153,10 @@ function ChatPageContent() {
             const json = await res.json();
             if (!res.ok) throw new Error("فشل إرسال الرسالة");
 
-            setChatData((prev) => ({
-                ...prev,
-                messages: [...(prev.messages || []), json.data],
-            }));
+            // setChatData((prev) => ({
+            //     ...prev,
+            //     messages: [...(prev.messages || []), json.data],
+            // }));
 
             setMessage("");
             setAttachments([]);
@@ -166,6 +171,17 @@ function ChatPageContent() {
         return (
             <div className="flex items-center justify-center min-h-screen bg-gray-50">
                 <Loader />
+            </div>
+        );
+    }
+
+    if (notFound && isAdmin) {
+        return (
+            <div className="h-screen flex flex-col items-center justify-center gap-6">
+                <div className="text-center space-y-3">
+                    <h1 className="text-3xl font-bold text-gray-800">404</h1>
+                    <p className="text-lg text-gray-600"> المحادثة غير موجودة</p>
+                </div>
             </div>
         );
     }
@@ -268,14 +284,6 @@ function ChatPageContent() {
             </div>
         </div>
 
-    );
-}
-
-export default function ChatPage() {
-    return (
-        <Suspense fallback={<div className="flex items-center justify-center min-h-screen bg-gray-50"><Loader /></div>}>
-            <ChatPageContent />
-        </Suspense>
     );
 }
 

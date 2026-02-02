@@ -113,7 +113,7 @@ export default function MyRequestDetailsPage() {
 
         try {
             const res = await fetchWithAuth(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/requests/${request.id}/accept-offer/${offerId}`,
+                `${process.env.NEXT_PUBLIC_BASE_URL}/requests/${request.id}/offers/${offerId}/accept`,
                 {
                     method: "PATCH",
                     headers: {

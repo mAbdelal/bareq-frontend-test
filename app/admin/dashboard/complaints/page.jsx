@@ -15,7 +15,7 @@ export default function AdminComplaintsPage() {
       try {
         const res = await fetch("/api/admin/complaints");
         const json = await res.json().catch(() => ({}));
-        if (!res.ok) throw new Error(json?.message || "تعذر جلب الشكاوى");
+        if (!res.ok) throw new Error(json?.message || "لا يوجد شكاوى");
         // Expecting json.data to be an array; fallback to []
         setItems(json.data || []);
       } catch (err) {
