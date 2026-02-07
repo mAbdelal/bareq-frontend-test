@@ -153,10 +153,10 @@ export default function ChatPage() {
             const json = await res.json();
             if (!res.ok) throw new Error("فشل إرسال الرسالة");
 
-            // setChatData((prev) => ({
-            //     ...prev,
-            //     messages: [...(prev.messages || []), json.data],
-            // }));
+            setChatData((prev) => ({
+                ...prev,
+                messages: [...(prev.messages || []), json.data],
+            }));
 
             setMessage("");
             setAttachments([]);
