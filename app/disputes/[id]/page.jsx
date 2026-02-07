@@ -93,9 +93,12 @@ export default function DisputePage() {
         if (dispute.customRequest.accepted_offer?.chat) {
             chatLink = `/chats/offer/${dispute.customRequest.accepted_offer.chat.id}`;
         }
-        entityLink = `/requests/private/${dispute.custom_request_id}`;
-    }
-
+        if (dispute.customRequest.requester_id === currentUserId) {
+            entityLink = `/requests/private/${dispute.custom_request_id}`;
+        }else{
+            entityLink = `/requests/${dispute.custom_request_id}`;
+        }
+    } 
     // Handle submit
     const handleResolve = async () => {
         try {
@@ -261,23 +264,23 @@ export default function DisputePage() {
 
                                         <div>
                                             <Label>الإجراء</Label>
-                                        <Select
-                                            value={adminAction}
-                                            onValueChange={setAdminAction}
-                                            className="w-full text-right"
-                                            dir="rtl"
-                                        >
-                                            <SelectTrigger className="w-full text-right" dir="rtl">
-                                                <SelectValue placeholder="اختر إجراء" className="text-right" />
-                                            </SelectTrigger>
-                                            <SelectContent dir="rtl">
-                                                {actionOptions.map((opt) => (
-                                                    <SelectItem key={opt.value} value={opt.value} className="text-right">
-                                                        {opt.label}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
+                                            <Select
+                                                value={adminAction}
+                                                onValueChange={setAdminAction}
+                                                className="w-full text-right"
+                                                dir="rtl"
+                                            >
+                                                <SelectTrigger className="w-full text-right" dir="rtl">
+                                                    <SelectValue placeholder="اختر إجراء" className="text-right" />
+                                                </SelectTrigger>
+                                                <SelectContent dir="rtl">
+                                                    {actionOptions.map((opt) => (
+                                                        <SelectItem key={opt.value} value={opt.value} className="text-right">
+                                                            {opt.label}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
 
                                         </div>
 
