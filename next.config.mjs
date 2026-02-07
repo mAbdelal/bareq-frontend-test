@@ -15,7 +15,7 @@ const nextConfig = {
             {
                 protocol: "https",
                 hostname: "entire-brigida-bareq-21a455bc.koyeb.app",
-                port: "8000",
+                port: "443",
                 pathname: "/api/v1/assets/**",
             },
         ],

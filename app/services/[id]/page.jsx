@@ -125,7 +125,7 @@ export default function ServiceDetailsPage() {
             const json = await res.json();
 
             if (!res.ok) {
-                throw new Error("فشل إتمام عملية الشراء");
+                throw new Error(json.message || "فشل إتمام عملية الشراء");
             } else {
                 toast.success("تم الشراء بنجاح");
                 router.push(`/purchases/${json.data.id}`);
