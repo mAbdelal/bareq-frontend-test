@@ -1,6 +1,7 @@
-'use client'
+"use client";
+
 import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import ServiceCard from "@/components/ui/ServiceCard";
 import PageTitle from "@/components/ui/page-title";
@@ -15,6 +16,11 @@ export const dynamic = 'force-dynamic';
 const AsyncSelect = dynamicImport(() => import("react-select/async"), { ssr: false });
 
 function ServicesPageContent() {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const initialKeyword = searchParams?.get('keyword') || '';
+
+    const [keyword, setKeyword] = useState(initialKeyword);
     const [categories, setCategories] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedSkills, setSelectedSkills] = useState([]);
@@ -25,21 +31,18 @@ function ServicesPageContent() {
     const [totalPages, setTotalPages] = useState(1);
     const [loading, setLoading] = useState(false);
 
-
     const LIMIT = 9;
-    const searchParams = useSearchParams();
-    const keyword = searchParams?.get('keyword') || '';
 
     // Load categories once
     useEffect(() => {
         fetchCategories();
     }, []);
 
-    // Fetch services initially and whenever the keyword changes
+    // Fetch services initially and whenever the keyword changes from URL
     useEffect(() => {
         fetchServices(1, true);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [keyword]);
+    }, [initialKeyword]);
 
     const fetchCategories = async () => {
         try {
@@ -58,10 +61,8 @@ function ServicesPageContent() {
             const params = new URLSearchParams();
 
             if (withFilters) {
-                // include search keyword if present in URL
-                if (keyword) {
-                    params.append('keyword', keyword);
-                }
+                if (keyword) params.append('keyword', keyword);
+
                 if (selectedCategories.length > 0) {
                     params.append("categoryId", selectedCategories[0]);
                 }
@@ -100,7 +101,12 @@ function ServicesPageContent() {
         }
     };
 
-    const handleSearch = () => fetchServices(1, true);
+    const handleSearch = () => {
+        // Update URL query parameter without full page reload
+        router.replace(`/services?keyword=${encodeURIComponent(keyword)}`);
+        fetchServices(1, true);
+    };
+
     const handlePageChange = (event, page) => fetchServices(page, true);
 
     const loadSkillSuggestions = async (inputValue) => {
@@ -130,6 +136,17 @@ function ServicesPageContent() {
                 {/* Sidebar Filters */}
                 <div className="h-fit md:w-1/4 flex flex-col gap-6 bg-white shadow-lg rounded-2xl p-6 border border-gray-100">
                     <h2 className="text-3xl text-label font-bold">بحث</h2>
+
+                    {/* Keyword */}
+                    <div>
+                        <h3 className="font-semibold mb-2">الكلمة المفتاحية</h3>
+                        <input
+                            type="text"
+                            value={keyword}
+                            onChange={e => setKeyword(e.target.value)}
+                            className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 border-gray-300 focus:ring-primary"
+                        />
+                    </div>
 
                     {/* Categories */}
                     <div>
@@ -243,7 +260,11 @@ function ServicesPageContent() {
 
 export default function ServicesPage() {
     return (
-        <Suspense fallback={<div className="pb-10 pt-12 text-label"><PageTitle title="الخدمات" paragraph="ابحث عن خدمات أكاديمية مميزة" /></div>}>
+        <Suspense fallback={
+            <div className="pb-10 pt-12 text-label">
+                <PageTitle title="الخدمات" paragraph="ابحث عن خدمات أكاديمية مميزة" />
+            </div>
+        }>
             <ServicesPageContent />
         </Suspense>
     );

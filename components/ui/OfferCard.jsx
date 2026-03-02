@@ -1,11 +1,21 @@
 "use client";
 
-import React from "react";
+import React,{ useState } from "react";
 import Avatar from "@/components/ui/Avatar";
-import { Paperclip, DollarSign, Clock, FileText } from "lucide-react";
+import { Paperclip, DollarSign, Clock, FileText, Trash2 } from "lucide-react";
 import { translateRequestStatus } from "@/lib/translations";
 import Link from "next/link";
-
+import {
+    AlertDialog,
+    AlertDialogTrigger,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogCancel,
+    AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 
 export default function OfferCard({ offer }) {
     const provider = offer.provider?.user;
@@ -82,8 +92,9 @@ export default function OfferCard({ offer }) {
         </div>
     );
 }
+export function MyOfferCard({ offer, onDeleted }) {
 
-export function MyOfferCard({ offer }) {
+    const [loading, setLoading] = useState(false);
 
     const renderStatus = () => {
         if (offer.request?.accepted_offer_id === offer.id) {
@@ -92,6 +103,32 @@ export function MyOfferCard({ offer }) {
             return "مفتوح";
         } else {
             return "مغلق";
+        }
+    };
+
+    const handleDelete = async () => {
+        const confirmDelete = confirm("هل أنت متأكد من حذف العرض؟");
+        if (!confirmDelete) return;
+
+        try {
+            setLoading(true);
+
+            await axios.delete(
+                `${process.env.NEXT_PUBLIC_BASE_URL}/${offer.request?.id}/offers/my`,
+                {
+                    withCredentials: true,
+                }
+            );
+
+            if (onDeleted) {
+                onDeleted(offer.id); // remove from parent state
+            }
+
+        } catch (err) {
+            console.error(err);
+            alert("حدث خطأ أثناء حذف العرض");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -104,11 +141,13 @@ export function MyOfferCard({ offer }) {
             </h3>
 
             <div className="flex flex-col gap-3 text-sm text-gray-700">
+
                 {/* Request Info */}
                 <div className="flex items-center gap-2">
                     <DollarSign className="w-4 h-4 text-primary" />
                     <span>ميزانية الطلب: ${offer.request?.budget}</span>
                 </div>
+
                 <div className="flex items-center gap-2">
                     <Clock className="w-4 h-4 text-primary" />
                     <span>مدة التسليم المتوقعة: {offer.request?.expected_delivery_days} يوم</span>
@@ -119,6 +158,7 @@ export function MyOfferCard({ offer }) {
                     <DollarSign className="w-4 h-4 text-primary" />
                     <span>عرضك: ${offer.price}</span>
                 </div>
+
                 <div className="flex items-center gap-2">
                     <Clock className="w-4 h-4 text-primary" />
                     <span>تسليمك: {offer.delivery_days} يوم</span>
@@ -130,6 +170,7 @@ export function MyOfferCard({ offer }) {
                     <span>حالة الطلب: {renderStatus()}</span>
                 </div>
 
+                {/* View Link */}
                 <Link
                     href={
                         offer.request?.accepted_offer_id === offer.id
@@ -140,8 +181,20 @@ export function MyOfferCard({ offer }) {
                 >
                     → عرض تفاصيل الطلب
                 </Link>
-            </div>
 
+                {/* Delete Button (Only if not accepted) */}
+                {!offer.request?.accepted_offer_id && (
+                    <button
+                        onClick={handleDelete}
+                        disabled={loading}
+                        className="flex items-center justify-center gap-2 mt-3 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg text-sm transition disabled:opacity-50"
+                    >
+                        <Trash2 className="w-4 h-4" />
+                        {loading ? "جاري الحذف..." : "حذف العرض"}
+                    </button>
+                )}
+
+            </div>
         </div>
     );
 }

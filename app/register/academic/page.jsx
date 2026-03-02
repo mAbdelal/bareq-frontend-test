@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { useUser } from "@/context/UserContext";
+import BackLink from "@/components/ui/back-link";
 
 export default function SignUpPage() {
     const router = useRouter();
@@ -18,10 +19,8 @@ export default function SignUpPage() {
         defaultValues: {
             first_name_ar: "",
             last_name_ar: "",
-            full_name_en: "",
             email: "",
             username: "",
-            academic_status: "",
             password: "",
             confirmPassword: "",
             terms: false,
@@ -52,10 +51,6 @@ export default function SignUpPage() {
                 password: data.password,
                 first_name_ar: data.first_name_ar,
                 last_name_ar: data.last_name_ar,
-                full_name_en: data.full_name_en,
-                academicData: {
-                    academic_status: data.academic_status,
-                },
             };
 
             const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/register/academic`, {
@@ -78,7 +73,6 @@ export default function SignUpPage() {
         }
     };
 
-    // --- GOOGLE SIGN UP / LOGIN ---
     const handleGoogleLogin = async (credentialResponse) => {
         setLoading(true);
 
@@ -95,7 +89,6 @@ export default function SignUpPage() {
             if (!res.ok) throw new Error(json.message || "فشل تسجيل الدخول باستخدام Google");
 
             if (json.data) {
-                // json.data contains userPayload + isNewUser
                 dispatch({ type: "LOGIN", payload: json.data });
                 toast.success(json.data.isNewUser ? "تم إنشاء الحساب وتسجيل الدخول باستخدام Google" : "تم تسجيل الدخول باستخدام Google");
             }
@@ -110,7 +103,13 @@ export default function SignUpPage() {
 
     return (
         <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
-            <div className="min-h-screen flex items-center justify-center mt-10 p-4">
+            <div className="min-h-screen flex flex-col items-center justify-center mt-10 p-4">
+                {/* --- BACK LINK --- */}
+                <div className="w-full max-w-xl mb-4">
+                    <BackLink href="/" className="text-sm">العودة للرئيسية</BackLink>
+                </div>
+
+                {/* --- FORM CONTAINER --- */}
                 <div className="w-full max-w-xl bg-white p-10 rounded-3xl shadow-xl border border-gray-200">
                     <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">تسجيل أكاديمي جديد</h2>
 
@@ -151,16 +150,6 @@ export default function SignUpPage() {
                             {errors.last_name_ar && <span className="text-red-500 text-sm mt-1">{errors.last_name_ar.message}</span>}
                         </div>
 
-                        {/* Full Name English */}
-                        <div className="flex flex-col">
-                            <label className="mb-1 font-medium">الاسم الكامل بالإنجليزية</label>
-                            <input
-                                {...register("full_name_en", { required: "هذا الحقل مطلوب" })}
-                                className={`border rounded-xl p-3 focus:outline-none focus:ring-2 ${errors.full_name_en ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-primary"}`}
-                            />
-                            {errors.full_name_en && <span className="text-red-500 text-sm mt-1">{errors.full_name_en.message}</span>}
-                        </div>
-
                         {/* Email */}
                         <div className="flex flex-col">
                             <label className="mb-1 font-medium">البريد الإلكتروني</label>
@@ -181,25 +170,6 @@ export default function SignUpPage() {
                                 className={`border rounded-xl p-3 focus:outline-none focus:ring-2 ${errors.username ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-primary"}`}
                             />
                             {errors.username && <span className="text-red-500 text-sm mt-1">{errors.username.message}</span>}
-                        </div>
-
-                        {/* Academic Status */}
-                        <div className="flex flex-col">
-                            <label className="mb-1 font-medium">الحالة الأكاديمية</label>
-                            <select
-                                {...register("academic_status", { required: "هذا الحقل مطلوب" })}
-                                className={`border rounded-xl p-3 focus:outline-none focus:ring-2 ${errors.academic_status ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-primary"}`}
-                            >
-                                <option value="">اختر الحالة الأكاديمية</option>
-                                <option value="bachelor_student">طالب بكالوريوس</option>
-                                <option value="bachelor">بكالوريوس</option>
-                                <option value="master_student">طالب ماجستير</option>
-                                <option value="master">ماجستير</option>
-                                <option value="phd_candidate">طالب دكتوراه</option>
-                                <option value="phd">دكتوراه</option>
-                                <option value="other">أخرى</option>
-                            </select>
-                            {errors.academic_status && <span className="text-red-500 text-sm mt-1">{errors.academic_status.message}</span>}
                         </div>
 
                         {/* Password */}

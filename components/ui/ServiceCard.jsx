@@ -79,13 +79,17 @@ export default function ServiceCard({ service }) {
     );
 }
 
-
 export function MyServiceCard({ service }) {
     return (
         <Link
             href={`/services/private/${service.id}`}
-            className="block rounded-xl shadow hover:shadow-lg transition overflow-hidden border bg-white"
+            className="relative block rounded-xl shadow hover:shadow-lg transition overflow-hidden border bg-white"
         >
+            {/* Active / Inactive Badge */}
+            <div className={`absolute top-2 right-2 px-2 py-0.5 rounded-full text-xs font-semibold text-white ${service.is_active ? 'bg-green-500' : 'bg-red-500'}`}>
+                {service.is_active ? 'نشط' : 'غير نشط'}
+            </div>
+
             {/* Image */}
             <div className="relative w-full h-40 bg-gray-100">
                 {service.attachments?.length ? (

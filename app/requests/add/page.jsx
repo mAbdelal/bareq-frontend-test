@@ -227,7 +227,6 @@ export default function AddRequestPage() {
                             <input
                                 type="text"
                                 {...register("title")}
-                                placeholder="مثال: تطوير تطبيق لإدارة المهام"
                                 className="border rounded-xl px-4 py-3 w-full text-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition"
                             />
                             {errors.title && <span className="text-red-500 text-sm">{errors.title.message}</span>}
@@ -284,7 +283,6 @@ export default function AddRequestPage() {
                             <label className="text-xl font-semibold text-label">وصف المشروع</label>
                             <textarea
                                 {...register("description")}
-                                placeholder="اشرح تفاصيل المشروع بدقة..."
                                 className="border rounded-xl px-4 py-3 w-full text-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition min-h-[140px]"
                             />
                             {errors.description && (
@@ -310,7 +308,6 @@ export default function AddRequestPage() {
                                             setSelectedSkills(selected || []);
                                         }}
                                         value={selectedSkills}
-                                        placeholder="ابحث واختر المهارات"
                                         className="text-right text-lg"
                                         classNamePrefix="select"
                                         noOptionsMessage={() => "لا يوجد نتائج"}
@@ -327,7 +324,6 @@ export default function AddRequestPage() {
                             <input
                                 type="number"
                                 {...register("budget")}
-                                placeholder="200"
                                 className="border rounded-xl px-4 py-3 w-full text-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition"
                             />
                             {errors.budget && <span className="text-red-500 text-sm">{errors.budget.message}</span>}
@@ -339,7 +335,6 @@ export default function AddRequestPage() {
                             <input
                                 type="number"
                                 {...register("expected_delivery_days")}
-                                placeholder="7"
                                 className="border rounded-xl px-4 py-3 w-full text-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition"
                             />
                             {errors.expected_delivery_days && (

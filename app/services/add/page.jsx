@@ -151,7 +151,7 @@ export default function AddServicePage() {
                 if (!uploadRes.ok) throw new Error(uploadJson.message || "فشل رفع الملفات");
             }
 
-            toast.success("تم إضافة الخدمة بنجاح");
+            toast.success("بانتظار موافقة الإدارة على الخدمة الجديدة");
             router.push("/my-services");
         } catch (err) {
             toast.error(err.message || "حدث خطأ أثناء إضافة الخدمة");

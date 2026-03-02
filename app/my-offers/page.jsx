@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Loader from "@/components/ui/Loader";
 import Avatar from "@/components/ui/Avatar";
 import StarRating from "@/components/ui/starRating";
@@ -21,6 +21,11 @@ export default function MyOffersPage() {
     const [avatarUrl, setAvatarUrl] = useState("");
     const [fallbackLetter, setFallbackLetter] = useState("A");
 
+
+    const handleOfferDeleted = useCallback((deletedId) => {
+        setOffers(prev => prev.filter(o => o.id !== deletedId));
+    }, []);
+
     useEffect(() => {
         if (!state.user) return;
 
@@ -38,8 +43,8 @@ export default function MyOffersPage() {
 
                     setAvatarUrl(
                         avatar.startsWith("http")
-                            ? avatar // ✅ external avatar (Google, etc.)
-                            : `${process.env.NEXT_PUBLIC_BASE_URL}/assets/${avatar}` // ✅ local avatar
+                            ? avatar
+                            : `${process.env.NEXT_PUBLIC_BASE_URL}/assets/${avatar}`
                     );
                 }
 
@@ -52,6 +57,7 @@ export default function MyOffersPage() {
                 );
                 const offersJson = await offersRes.json();
                 setOffers(offersJson.data);
+
             } catch (err) {
                 console.error(err);
             } finally {
@@ -79,11 +85,13 @@ export default function MyOffersPage() {
             <PageTitle title="عروضي" />
 
             <div className="flex flex-col lg:flex-row gap-6">
+
                 {/* Sidebar */}
                 <div className="w-full h-fit lg:w-1/4 flex flex-col items-center gap-4 bg-white shadow-lg rounded-2xl p-6 relative border border-gray-100">
+
                     <div className="absolute -top-16 lg:-top-16">
                         <Avatar
-                            url={`${process.env.NEXT_PUBLIC_BASE_URL}/assets/${avatarUrl}`}
+                            url={avatarUrl}
                             fallbackLetter={fallbackLetter}
                             alt={academic.user?.full_name_en}
                             size={128}
@@ -113,42 +121,15 @@ export default function MyOffersPage() {
                     </div>
 
                     <div className="mt-4 w-full text-sm md:text-base space-y-2 text-label">
-                        <p>
-                            <span className="font-semibold">الحالة الأكاديمية:</span>{" "}
-                            {translateAcademicStatus(academic.academic_status)}
-                        </p>
-                        <p>
-                            <span className="font-semibold">الجامعة:</span>{" "}
-                            {academic.university || "-"}
-                        </p>
-                        <p>
-                            <span className="font-semibold">الكلية:</span>{" "}
-                            {academic.faculty || "-"}
-                        </p>
-                        <p>
-                            <span className="font-semibold">التخصص:</span>{" "}
-                            {academic.major || "-"}
-                        </p>
-                        <p>
-                            <span className="font-semibold">سنة البدء:</span>{" "}
-                            {academic.study_start_year || "-"}
-                        </p>
-                        <p>
-                            <span className="font-semibold">سنة التخرج:</span>{" "}
-                            {academic.study_end_year || "-"}
-                        </p>
-                        <p>
-                            <span className="font-semibold">المسمى الوظيفي:</span>{" "}
-                            {academic.job_title || "-"}
-                        </p>
-                        <p>
-                            <span className="font-semibold">اسم المستخدم:</span>{" "}
-                            {academic.user?.username || "-"}
-                        </p>
-                        <p>
-                            <span className="font-semibold">الاسم الإنجليزي:</span>{" "}
-                            {academic.user?.full_name_en || "-"}
-                        </p>
+                        <p><span className="font-semibold">الحالة الأكاديمية:</span> {translateAcademicStatus(academic.academic_status)}</p>
+                        <p><span className="font-semibold">الجامعة:</span> {academic.university || "-"}</p>
+                        <p><span className="font-semibold">الكلية:</span> {academic.faculty || "-"}</p>
+                        <p><span className="font-semibold">التخصص:</span> {academic.major || "-"}</p>
+                        <p><span className="font-semibold">سنة البدء:</span> {academic.study_start_year || "-"}</p>
+                        <p><span className="font-semibold">سنة التخرج:</span> {academic.study_end_year || "-"}</p>
+                        <p><span className="font-semibold">المسمى الوظيفي:</span> {academic.job_title || "-"}</p>
+                        <p><span className="font-semibold">اسم المستخدم:</span> {academic.user?.username || "-"}</p>
+                        <p><span className="font-semibold">الاسم الإنجليزي:</span> {academic.user?.full_name_en || "-"}</p>
                     </div>
                 </div>
 
@@ -161,11 +142,16 @@ export default function MyOffersPage() {
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
                             {offers.map((offer) => (
-                                <MyOfferCard key={offer.id} offer={offer} />
+                                <MyOfferCard
+                                    key={offer.id}
+                                    offer={offer}
+                                    onDeleted={handleOfferDeleted}
+                                />
                             ))}
                         </div>
                     )}
                 </div>
+
             </div>
         </div>
     );
