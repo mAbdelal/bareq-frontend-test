@@ -42,7 +42,7 @@ export function MyOfferCard({ offer, onDeleted }) {
             setLoading(true);
 
             const res = await fetch(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/${offer.request?.id}/offers/my`,
+                `${process.env.NEXT_PUBLIC_BASE_URL}/requests/${offer.request?.id}/offers/my`,
                 {
                     method: "DELETE",
                     credentials: "include",
