@@ -140,9 +140,9 @@ export function MyRequestsCard({ request }) {
             <div className="relative bg-white shadow-lg rounded-2xl cursor-pointer transform transition-all duration-300 hover:shadow-xl hover:scale-105 min-h-[220px] flex flex-col p-4">
 
                 {/* Status Badge */}
-                <div className="absolute top-3 right-3">
+                <div className="absolute top-3 left-3">
                     <span
-                        className={`px-3 py-1 text-xs font-semibold rounded-full ${getRequestStatusColor(
+                        className={` px-3 py-1 text-xs font-semibold rounded-full ${getRequestStatusColor(
                             request.status
                         )}`}
                     >
